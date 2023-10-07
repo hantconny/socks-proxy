@@ -1,1 +1,0 @@
-docker build -t "tor-socks-proxy:v1" . && docker stop tor-socks-proxy && docker rm tor-socks-proxy && docker run -d -p 5000:5000/tcp -p 1080:1080/tcp -e tors=25 --name tor-socks-proxy tor-socks-proxy:v1 && docker logs -f tor-socks-proxy
