@@ -1,0 +1,43 @@
+import os
+
+
+def generate_torrc():
+    with open('/etc/tor/torrc.tpl', encoding='utf-8') as template:
+        config = template.read()
+        for i in range(get_tors()):
+            with open('/etc/tor/torrc.{}'.format(10000 + i), encoding='utf-8', mode='a') as f:
+                f.write(config.format(port=10000 + i))
+
+
+def generate_haproxy_cfg():
+    entry = '    server  app{i} 127.0.0.1:{port} check'
+    with open('/etc/tor/haproxy.tpl', encoding='utf-8') as template:
+        config = template.read()
+        if not os.path.exists('/etc/haproxy'):
+            os.makedirs('/etc/haproxy')
+        with open('/etc/haproxy/haproxy.cfg', encoding='utf-8', mode='w') as f:
+            f.write(
+                config.format(
+                    server_list='\n'.join([entry.format(i=10000 + i, port=10000 + i) for i in range(get_tors())])))
+
+
+def generate_shell():
+    entry = '/usr/bin/tor -f /etc/tor/torrc.{i} '
+    with open('/etc/tor/shell.tpl', encoding='utf-8') as template:
+        config = template.read()
+        if not os.path.exists('/usr/local/bin'):
+            os.makedirs('/usr/local/bin')
+        with open('/usr/local/bin/start.sh', encoding='utf-8', mode='w') as f:
+            f.write(
+                config.format(
+                    tor_instances='&\n'.join([entry.format(i=10000 + i) for i in range(get_tors())])))
+
+
+def get_tors():
+    return int(os.environ.get('tors')) if os.environ.get('tors') else 10
+
+
+if __name__ == '__main__':
+    generate_torrc()
+    generate_haproxy_cfg()
+    generate_shell()
