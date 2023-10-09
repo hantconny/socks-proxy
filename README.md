@@ -6,7 +6,7 @@
 ### 构建镜像
 
 ```shell
-$ docker build -t 'hantconny/tor-socks-proxy:v1' .
+$ docker build -t 'tor-socks-proxy:v1' .
 ```
 
 
