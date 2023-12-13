@@ -20,7 +20,7 @@ $ docker run -d -p 5000:5000/tcp -p 1080:1080/tcp -e tors=25 --name tor-socks-pr
 如需在一台机器上启动多个容器，则可以使用如下的命令：
 
 ```shell
-$ docker run -d -p 5001:5000/tcp -p 1081:1080/tcp -e tors=25 --name tor-socks-proxy-0 tor-socks-proxy:v1
+$ docker run -d -p 5000:5000/tcp -p 1080:1080/tcp -e tors=25 --name tor-socks-proxy-0 tor-socks-proxy:v1
 $ docker run -d -p 5001:5000/tcp -p 1081:1080/tcp -e tors=25 --name tor-socks-proxy-1 tor-socks-proxy:v1
 ...
 ```
